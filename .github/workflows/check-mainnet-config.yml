@@ -2,6 +2,8 @@ name: Check mainnet configuration
 
 on:
   push:
+    paths-ignore:
+      - 'doc/**'
 
 jobs:
   build:
