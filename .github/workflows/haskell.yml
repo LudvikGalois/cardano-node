@@ -2,6 +2,8 @@ name: Haskell CI
 
 on:
   push:
+    paths-ignore:
+      - 'doc/**'
   workflow_dispatch:
     inputs:
       tests:
@@ -14,7 +16,22 @@ on:
   create:
 
 jobs:
+  # Since this job runs on create, we need to be a bit more creative
+  # about how we check if it's just a doc change. To do this, we get
+  # a diff of the files between us and master, and indicate if at least one
+  # the files has changed
+  check-doc-change:
+    runs-on: ubuntu-latest
+    outputs:
+      only-changed-docs: ${{ steps.check.output.result }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: "git fetch origin master:master"
+      - id: check
+        run: "bash -c 'git diff HEAD master --name-only | grep -Ev \"^doc/\" > /dev/null; echo \"::set-output name=result::$?\"'"
   build:
+    needs: [check-doc-change]
+    if: ${{ needs.check-doc-change.outputs.only-changed-docs == 0 }}
     runs-on: ${{ matrix.os }}
 
     defaults:
