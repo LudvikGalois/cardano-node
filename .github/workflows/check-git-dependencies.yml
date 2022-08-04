@@ -2,6 +2,8 @@ name: Check git dependencies
 
 on:
   push:
+    paths-ignore:
+      - 'doc/**'
 
 jobs:
   build:
