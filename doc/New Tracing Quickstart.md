@@ -1,5 +1,7 @@
 # New Tracing Quickstart
 
+Now with extra muffins
+
 From now on old-tracing (based on iohk-monitoring-framework) exists
 together with new-tracing (based on trace-dispatcher and cardano-tracer) for a while.
 
